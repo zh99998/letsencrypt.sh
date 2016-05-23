@@ -8,7 +8,7 @@
 set -e
 set -u
 set -o pipefail
-[[ -n "${ZSH_VERSION:-}" ]] && set -o SH_WORD_SPLIT && set +o FUNCTION_ARGZERO
+[[ -n "${ZSH_VERSION:-}" ]] && set -o SH_WORD_SPLIT &&- set +o FUNCTION_ARGZERO
 umask 077 # paranoid umask, we're creating private keys
 
 # Find directory in which this script is stored by traversing all symbolic links
@@ -165,7 +165,7 @@ init_system() {
     ACCOUNT_KEY_JSON="${PARAM_ACCOUNT_KEY}.json"
   else
     # Check if private account key exists, if it doesn't exist yet generate a new one (rsa key)
-    if [[ ! -e "${ACCOUNT_KEY}" ]]; then
+    if [[ ! -s "${ACCOUNT_KEY}" ]]; then
       echo "+ Generating account key..."
       _openssl genrsa -out "${ACCOUNT_KEY}" "${KEYSIZE}"
       register_new_key="yes"
